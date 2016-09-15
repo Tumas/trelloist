@@ -46,6 +46,43 @@ curl -s http://twohosers.com/episodes/ | pup 'div.entry-content ul li a text{}' 
 "Added new checklist two hosers podcast to card Card2 with 265 items"
 ```
 
+### More examples
+
+  Create a list of favorite episodes to watch
+
+```
+ curl -s https://en.wikipedia.org/wiki/Narcos#Season_2_2 | pup 'table.wikiepisodetable td:nth-last-of-type(4) text{}' | tail -n 10 | recode html..utf8  | xargs -0 ./bin/trelloist create -c abcdefcardID -n "Narcos: season 2"
+ "ADDING \"Free at Last\""
+ "ADDING \"Cambalache\""
+ "ADDING \"Our Man in Madrid\""
+ "ADDING \"The Good, the Bad, and the Dead\""
+ "ADDING \"The Enemies of My Enemy\""
+ "ADDING \"Los Pepes\""
+ "ADDING \"Deutschland 93\""
+ "ADDING \"Exit El PatrÃ³n\""
+ "ADDING \"Nuestra Finca\""
+ "ADDING \"Al Fin CayÃ³!\""
+ "Added new checklist Narcos: season 2 to card TV series with 10 items"
+```
+
+  Create a TODO list with units to complete 
+
+```
+for i in {1..31}; do echo "Unit $i"; done | xargs -0 ./bin/trelloist create -c abcdeCardID -n "Finnish. Beginners. PART A"
+
+"ADDING Unit 1"
+"ADDING Unit 2"
+"ADDING Unit 3"
+"ADDING Unit 4"
+
+...
+
+"ADDING Unit 29"
+"ADDING Unit 30"
+"ADDING Unit 31"
+"Added new checklist Finnish. Beginners. PART A to card Pimsleur: Finnish with 31 items"
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
