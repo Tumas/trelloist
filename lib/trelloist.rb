@@ -44,5 +44,24 @@ module Trelloist
       board = Trello::Board.find(options[:board_id])
       board.cards.each { |card| p [card.name, card.id] }
     end
+
+    desc 'reset', 'reset checklists on a given card'
+
+    option :card_id, aliases: '-c', desc: 'trello card id', required: true
+    option :except, aliases: '-e', desc: 'card ids to skip', required: false, type: :array
+
+    def reset
+      card_id = options[:card_id]
+      card    = Trello::Card.find(card_id)
+
+      card.checklists.each do |checklist|
+        # p "#{checklist.name} : #{checklist.id}"
+        next if options[:except].to_a.include?(checklist.id)
+
+        checklist.items.each do |item|
+          checklist.update_item_state(item.id, 'incomplete')
+        end
+      end
+    end
   end
 end
